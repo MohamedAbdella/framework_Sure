@@ -1,0 +1,13 @@
+.idea
+.settings
+target
+test-output
+.classpath
+.project
+screenshots
+allure-results
+allure-report
+logs
+/bin/
+/target/
+logs.log

@@ -1,0 +1,7 @@
+{
+  "fcm": "fcm",
+  "type": "email",
+  "account_id": "{{Account_Id}}",
+  "email": "{{Email}}",
+  "password": "{{Password}}"
+}
