@@ -137,15 +137,15 @@ public class DriverFactory {
 
     private static WebDriver createDockerWebDriver(ConfigManager configManager) throws Exception {
         String browser = configManager.getProperty("webBrowserName").toLowerCase();
-        MutableCapabilities options;
-        switch (browser) {
-            case BROWSER_FIREFOX -> options = new FirefoxOptions();
-            case BROWSER_CHROME -> options = new ChromeOptions();
-            case BROWSER_EDGE -> options = new EdgeOptions();
-            case BROWSER_SAFARI -> options = new SafariOptions();
+
+        var options = switch (browser) {
+            case BROWSER_FIREFOX -> setupFirefoxOptions();
+            case BROWSER_CHROME -> setupChromeOptions();
+            case BROWSER_EDGE -> setupEdgeOptions();
+            case BROWSER_SAFARI -> new SafariOptions();
             default -> throw new Exception("Invalid browser: " + browser);
-        }
-        String hubUrl = configManager.getProperty("seleniumHubUrl");
-        return new RemoteWebDriver(new URL(hubUrl), options);
+        };
+
+        return new RemoteWebDriver(new URL(SELENIUM_HUB_URL), options);
     }
 }
