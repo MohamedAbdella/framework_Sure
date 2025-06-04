@@ -3,6 +3,7 @@ package com.sure.utilities;
 import lombok.extern.log4j.Log4j2;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import static com.sure.utilities.FilesDirectories.USER_DIR;
 
@@ -20,6 +21,6 @@ public class GenerateAllureReport {
         String scriptPath = USER_DIR + "/src/main/resources/generateAllureReport.sh";
         log.info("scriptPath: {}", scriptPath);
         executeCommand(scriptPath);
-        Thread.sleep(9000);
+        TimeUnit.SECONDS.sleep(9);
     }
 }
