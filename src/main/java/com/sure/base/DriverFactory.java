@@ -29,7 +29,6 @@ public class DriverFactory {
         // Prevent instantiation
     }
 
-    private static final String SELENIUM_HUB_URL = "http://localhost:4444/wd/hub";
     private static final String ANDROID_PLATFORM_NAME = "Android";
     private static final String IOS_PLATFORM_NAME = "iOS";
     private static final String WEB_PLATFORM_NAME = "web";
@@ -146,6 +145,7 @@ public class DriverFactory {
             case BROWSER_SAFARI -> options = new SafariOptions();
             default -> throw new Exception("Invalid browser: " + browser);
         }
-        return new RemoteWebDriver(new URL(SELENIUM_HUB_URL), options);
+        String hubUrl = configManager.getProperty("seleniumHubUrl");
+        return new RemoteWebDriver(new URL(hubUrl), options);
     }
 }
