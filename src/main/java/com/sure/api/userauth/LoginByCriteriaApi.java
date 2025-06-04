@@ -15,16 +15,16 @@ public class LoginByCriteriaApi extends BaseApi {
         setUpResponseSpecification();
 
         // Replace placeholders in the JSON body with actual values
-//        String requestBody = jsonFileManagerBodyRequests.getJsonFileContent("testApiRequestsPath", "LoginByCriteriaApi.json")
-//                .replace("{{Account_Id}}", String.valueOf(accountId))
-//                .replace("{{Email}}", email)
-//                .replace("{{Password}}", password);
+        String requestBody = jsonFileManagerBodyRequests.getJsonFileContent("testApiRequestsPath", "LoginByCriteriaApi.json")
+                .replace("{{Account_Id}}", String.valueOf(accountId))
+                .replace("{{Email}}", email)
+                .replace("{{Password}}", password);
 
         JsonPath responseJson = RestAssured.given()
                 .spec(requestSpec).log().all()
                 .when()
                 .baseUri(ApiPath.setBaseAPIPath())
-                .body("requestBody")
+                .body(requestBody)
                 .post(ApiPath.apiPath.LOGIN.getValue())
                 .then().spec(responseSpec).log().all()
                 .extract().jsonPath();
