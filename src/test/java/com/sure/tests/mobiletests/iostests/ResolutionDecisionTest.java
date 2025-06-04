@@ -108,7 +108,9 @@ public class ResolutionDecisionTest extends TestBase {
 
     @Step("Login From Api to get The Token")
     private void login() {
-        token = new LoginByCriteriaApi().loginByCriteriaApi(94, "yabdelmenaam@sure.com.sa", "123456");
+        String email = jsonFileManagerLoginTestData.getTestData("Users.BoardSecretary");
+        String password = jsonFileManagerLoginTestData.getTestData("Users.Password");
+        token = new LoginByCriteriaApi().loginByCriteriaApi(94, email, password);
     }
 
     @Step("Add a new Resolution Decision From Api")
