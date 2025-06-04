@@ -17,6 +17,7 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.safari.SafariOptions;
+import org.openqa.selenium.remote.MutableCapabilities;
 
 import java.io.IOException;
 import java.net.URL;
@@ -28,7 +29,6 @@ public class DriverFactory {
         // Prevent instantiation
     }
 
-    private static final String SELENIUM_HUB_URL = "http://localhost:4444/wd/hub";
     private static final String ANDROID_PLATFORM_NAME = "Android";
     private static final String IOS_PLATFORM_NAME = "iOS";
     private static final String WEB_PLATFORM_NAME = "web";
@@ -137,6 +137,7 @@ public class DriverFactory {
 
     private static WebDriver createDockerWebDriver(ConfigManager configManager) throws Exception {
         String browser = configManager.getProperty("webBrowserName").toLowerCase();
+
         var options = switch (browser) {
             case BROWSER_FIREFOX -> setupFirefoxOptions();
             case BROWSER_CHROME -> setupChromeOptions();
