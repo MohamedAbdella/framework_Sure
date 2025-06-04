@@ -17,6 +17,7 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
+import org.openqa.selenium.safari.SafariOptions;
 
 import java.io.IOException;
 import java.net.URL;
@@ -137,8 +138,14 @@ public class DriverFactory {
 
     private static WebDriver createDockerWebDriver(ConfigManager configManager) throws Exception {
         String browser = configManager.getProperty("webBrowserName").toLowerCase();
-        DesiredCapabilities capabilities = new DesiredCapabilities();
-        capabilities.setBrowserName(browser);
-        return new RemoteWebDriver(new URL(SELENIUM_HUB_URL), capabilities);
+        var options = switch (browser) {
+            case BROWSER_FIREFOX -> setupFirefoxOptions();
+            case BROWSER_CHROME -> setupChromeOptions();
+            case BROWSER_EDGE -> setupEdgeOptions();
+            case BROWSER_SAFARI -> new SafariOptions();
+            default -> throw new Exception("Invalid browser: " + browser);
+        };
+
+        return new RemoteWebDriver(new URL(SELENIUM_HUB_URL), options);
     }
 }
