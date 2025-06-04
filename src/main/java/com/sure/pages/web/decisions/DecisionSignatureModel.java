@@ -53,46 +53,21 @@ public class DecisionSignatureModel extends PageBase {
 
     @Step("Check The Decision Report Appearance")
     public boolean checkDecisionReportAppearance() {
-        final int maxRetries = 30; // Maximum number of retries
-        final int delayBetweenRetries = 2000; // Delay between retries in milliseconds
+        try {
+            WebElement frame = driver.findElement(iframeLocator);
+            driver.switchTo().frame(frame);
 
-        for (int i = 0; i < maxRetries; i++) {
-            try {
-                // Wait for the iframe to be available and switch to it
-                WebElement frame = driver.findElement(iframeLocator);
-                driver.switchTo().frame(frame);
-
-                // Wait for the DOM inside the iframe to be fully loaded
-                WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10)); // Adjust timeout as needed
-                wait.until(ExpectedConditions.jsReturnsValue("return document.readyState === 'complete';"));
-
-                // Wait for the specific element inside the iframe to be visible
-                if (checkElementIsDisplayed(signHereButton)) {
-                    log.info("Sign Here Button is visible.");
-                    return true; // Exit early if the button is found
-                }
-
-                // If the element is not displayed, switch back to the default content before retrying
-                driver.switchTo().defaultContent();
-
-            } catch (NoSuchElementException | TimeoutException e) {
-                log.warn("Attempt {}/{}: Frame or Sign Here Button not found yet. Retrying...", i + 1, maxRetries);
-            }
-
-            // Wait for a short period before the next attempt only if the loop will continue
-            if (i < maxRetries - 1) {
-                try {
-                    Thread.sleep(delayBetweenRetries);
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt(); // Restore interrupted status
-                    log.error("Thread was interrupted during sleep: {}", e.getMessage());
-                    return false; // Exit the method if interrupted
-                }
-            }
+            WebDriverWait longWait = new WebDriverWait(driver, Duration.ofSeconds(30));
+            longWait.until(ExpectedConditions.jsReturnsValue("return document.readyState === 'complete';"));
+            longWait.until(ExpectedConditions.visibilityOfElementLocated(signHereButton));
+            log.info("Sign Here Button is visible.");
+            return true;
+        } catch (NoSuchElementException | TimeoutException e) {
+            log.warn("Sign Here Button was not found: {}", e.getMessage());
+        } finally {
+            driver.switchTo().defaultContent();
         }
-
-        log.warn("Sign Here Button was not found after {} retries.", maxRetries);
-        return false; // Return false if the button was not found after retries
+        return false;
     }
 
     @Step("Click On Sign Here Button")
