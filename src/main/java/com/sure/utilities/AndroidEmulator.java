@@ -8,8 +8,8 @@ import java.util.concurrent.TimeUnit;
 import static com.sure.utilities.FilesDirectories.USER_DIR;
 
 @Log4j2
-public class AndroidEmulator {
-    AndroidEmulator() {
+public final class AndroidEmulator {
+    private AndroidEmulator() {
     }
 
     public static void executeCommand(String command) throws IOException {

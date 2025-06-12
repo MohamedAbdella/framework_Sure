@@ -17,7 +17,7 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.safari.SafariOptions;
-import org.openqa.selenium.remote.MutableCapabilities;
+
 
 import java.io.IOException;
 import java.net.URL;
@@ -146,6 +146,12 @@ public class DriverFactory {
             default -> throw new Exception("Invalid browser: " + browser);
         };
 
-        return new RemoteWebDriver(new URL(SELENIUM_HUB_URL), options);
+        String hubUrl = configManager.getProperty("seleniumHubUrl");
+        if (hubUrl == null || hubUrl.isEmpty()) {
+            hubUrl = "http://localhost:4444/wd/hub";
+        }
+
+        return new RemoteWebDriver(new URL(hubUrl), options);
+
     }
 }

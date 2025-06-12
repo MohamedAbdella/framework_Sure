@@ -21,7 +21,7 @@ public class LoggerClass {
     }
 
     @Step("Warning message: {message}")
-    public void logWarn(String message) {
+    public static void logWarn(String message) {
         log.warn(message);
     }
 
