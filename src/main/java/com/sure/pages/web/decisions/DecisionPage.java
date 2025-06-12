@@ -8,6 +8,10 @@ import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.TimeoutException;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import java.time.Duration;
 
 import static com.sure.utilities.Helper.generateRandomDate;
 
@@ -192,37 +196,17 @@ public class DecisionPage extends PageBase {
 
     @Step("Get Voting Result")
     public boolean isVotingResultCorrect(String expectedVoteResult) {
-        final int maxRetries = 30; // Maximum number of retries
-        final int delayBetweenRetries = 2000; // Delay between retries in milliseconds
-
-        for (int i = 0; i < maxRetries; i++) {
-            try {
-                // Check if the voting result element is displayed
-                if (checkElementIsDisplayed(voteResult)) {
-                    String result = getElementText(voteResult);
-                    log.info("Voting result found: {}", result);
-                    return result.equalsIgnoreCase(expectedVoteResult);
-                }
-            } catch (NoSuchElementException | TimeoutException e) {
-                // Continue the loop if the element is not found yet
-                log.warn("Voting result element not found yet. Attempt {}/{}", i + 1, maxRetries);
-            } catch (Exception e) {
-                log.error("Unexpected error while checking voting result: {}", e.getMessage());
-            }
-            // Wait for a short period before the next attempt only if the loop will continue
-            if (i < maxRetries - 1) {
-                try {
-                    Thread.sleep(delayBetweenRetries);
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt(); // Restore interrupted status
-                    log.error("Thread was interrupted during sleep: {}", e.getMessage());
-                    return false; // Exit the method if interrupted
-                }
-            }
+        try {
+            WebDriverWait longWait = new WebDriverWait(driver, Duration.ofSeconds(60));
+            WebElement resultElement = longWait.until(
+                    ExpectedConditions.visibilityOfElementLocated(voteResult));
+            String result = resultElement.getText();
+            log.info("Voting result found: {}", result);
+            return result.equalsIgnoreCase(expectedVoteResult);
+        } catch (TimeoutException e) {
+            log.warn("Voting result was not found within the expected time.");
+            return false;
         }
-
-        log.warn("Voting result was not found within the expected time.");
-        return false; // Return false if the voting result was not found after retries
     }
 
     @Step("Get The Voting Status")
