@@ -13,7 +13,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 @Log4j2
-public class JsonFileManager {
+public final class JsonFileManager {
     private JsonObject jsonObject;
     private final ConfigManager configManager;
 

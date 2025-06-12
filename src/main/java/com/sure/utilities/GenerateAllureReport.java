@@ -7,8 +7,8 @@ import java.io.IOException;
 import static com.sure.utilities.FilesDirectories.USER_DIR;
 
 @Log4j2
-public class GenerateAllureReport {
-    GenerateAllureReport() {
+public final class GenerateAllureReport {
+    private GenerateAllureReport() {
     }
 
     private static void executeCommand(String command) throws IOException {

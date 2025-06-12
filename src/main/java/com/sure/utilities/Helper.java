@@ -8,7 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 @Log4j2
-public class Helper {
+public final class Helper {
     private Helper() {
     }
 
