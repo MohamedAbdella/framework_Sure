@@ -11,15 +11,15 @@
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
-        <selenium.version>4.22.0</selenium.version>
-        <testng.version>7.10.2</testng.version>
+        <selenium.version>4.33.0</selenium.version>
+        <testng.version>7.11.0</testng.version>
         <rest-assured.version>5.4.0</rest-assured.version>
-        <allure-testng.version>2.27.0</allure-testng.version>
-        <allure-maven.version>2.20.1</allure-maven.version>
-        <allure-maven-report.version>2.20.1</allure-maven-report.version>
+        <allure-testng.version>2.29.1</allure-testng.version>
+        <allure-maven.version>2.15.2</allure-maven.version>
+        <allure-maven-report.version>2.34.0</allure-maven-report.version>
         <aspectj.version>1.9.22.1</aspectj.version>
         <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
-        <maven-surefire-plugin.version>3.1.2</maven-surefire-plugin.version>
+        <maven-surefire-plugin.version>3.5.3</maven-surefire-plugin.version>
         <slf4j.version>2.0.13</slf4j.version>
         <assertj.version>3.26.3</assertj.version>
         <jsonPath.version>2.9.0</jsonPath.version>
@@ -45,7 +45,7 @@
         <dependency>
             <groupId>com.browserstack</groupId>
             <artifactId>browserstack-java-sdk</artifactId>
-            <version>1.23.4</version>
+            <version>1.32.12</version>
         </dependency>
 
 
@@ -117,7 +117,7 @@
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>
-            <version>5.3.0</version>
+            <version>5.4.1</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/com.github.javafaker/javafaker -->
         <dependency>
