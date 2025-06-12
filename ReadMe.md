@@ -1,18 +1,37 @@
-    # to run test cases in a certain test class.
-$ mvn -Dtest={test class name}test
+# Running Tests
 
+To run all test cases in a specific class:
+```bash
+mvn -Dtest=<test class name> test
+```
 
-# to run a certain test case in a test class.
-$ mvn -Dtest={test class name}#{test method name} test
+To run a particular test method:
+```bash
+mvn -Dtest=<test class name>#<test method name> test
+```
 
-# to run a suite using maven command. Just specify the test suite in the pom.xml and cmd this
-$ mvn test
+To run the default suite defined in the `pom.xml`:
+```bash
+mvn test
+```
 
-# to run a suite using maven command
-$ mvn clean test -DsuiteXmlFile="suits\mailbox.xml"
+To use a specific TestNG suite file:
+```bash
+mvn clean test -DsuiteXmlFile="suits/mailbox.xml"
+```
 
-# to run selenium grid using docker compose
-$ docker-compose up -d --scale chrome={x}
+To start a Selenium Grid using Docker Compose:
+```bash
+docker-compose up -d --scale chrome=<x>
+```
 
-# to run the allure report
-$ allure serve
+To generate and view the Allure report:
+```bash
+allure serve
+```
+
+## Requirements
+
+- Java 17
+- Lombok plugin enabled in your IDE (with annotation processing)
+
