@@ -17,7 +17,6 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.safari.SafariOptions;
-import org.openqa.selenium.remote.MutableCapabilities;
 
 import java.io.IOException;
 import java.net.URL;
@@ -138,7 +137,12 @@ public class DriverFactory {
     private static WebDriver createDockerWebDriver(ConfigManager configManager) throws Exception {
         String browser = configManager.getProperty("webBrowserName").toLowerCase();
 
-        var options = switch (browser) {
+        String hubUrl = configManager.getProperty("seleniumHubUrl");
+        if (hubUrl == null || hubUrl.isEmpty()) {
+            hubUrl = "http://localhost:4444/wd/hub";
+        }
+
+        return new RemoteWebDriver(new URL(hubUrl), options);
             case BROWSER_FIREFOX -> setupFirefoxOptions();
             case BROWSER_CHROME -> setupChromeOptions();
             case BROWSER_EDGE -> setupEdgeOptions();
