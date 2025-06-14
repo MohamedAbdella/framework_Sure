@@ -5,6 +5,8 @@ import com.sure.base.BaseApi;
 import com.sure.utilities.JsonFileManager;
 import lombok.extern.log4j.Log4j2;
 import org.testng.annotations.Test;
+import java.io.FileNotFoundException;
+
 
 @Log4j2
 public class LoginApiTest extends BaseApi {
@@ -12,7 +14,7 @@ public class LoginApiTest extends BaseApi {
     private final JsonFileManager jsonFileManagerLoginTestData = new JsonFileManager();
 
     @Test(priority = 1, description = "Verify That The User Is Logged In Successfully From Api And Get The Access Token")
-    public void login() {
+    public void login() throws FileNotFoundException {
         jsonFileManagerLoginTestData.getJsonFilePath("testDataFolderPath", "Login.json");
         String email = jsonFileManagerLoginTestData.getTestData("Users.BoardSecretary");
         String password = jsonFileManagerLoginTestData.getTestData("Users.Password");

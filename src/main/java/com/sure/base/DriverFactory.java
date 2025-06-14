@@ -108,6 +108,9 @@ public class DriverFactory {
         options.setCapability("hideKeyboard", true);
 
         String appiumUrl = startAppiumServer();
+        if (appiumUrl == null) {
+            throw new IllegalStateException("Appium is not available");
+        }
 
         log.info("Connecting to Appium server at: {}", appiumUrl);
         return new AndroidDriver(new URL(appiumUrl), options);
@@ -125,6 +128,10 @@ public class DriverFactory {
                 .setAutoAcceptAlerts(true);
 
         String appiumUrl = startAppiumServer();
+
+        if (appiumUrl == null) {
+            throw new IllegalStateException("Appium is not available");
+        }
 
         log.info("Connecting to Appium server at: {}", appiumUrl);
         return new IOSDriver(new URL(appiumUrl), options);
