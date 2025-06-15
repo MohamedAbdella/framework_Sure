@@ -17,7 +17,8 @@
         <allure-testng.version>2.29.1</allure-testng.version>
         <allure-maven.version>2.15.2</allure-maven.version>
         <allure-maven-report.version>2.34.0</allure-maven-report.version>
-        <aspectj.version>1.9.22.1</aspectj.version>
+        <!-- Updated to ensure compatibility with newer JDK versions -->
+        <aspectj.version>1.9.24</aspectj.version>
         <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
         <maven-surefire-plugin.version>3.5.3</maven-surefire-plugin.version>
         <slf4j.version>2.0.13</slf4j.version>

@@ -30,8 +30,21 @@ To generate and view the Allure report:
 allure serve
 ```
 
+### Platform Configuration
+
+The framework uses the `platformType` property in
+`src/main/resources/properties/executionPlatform.properties` to decide
+whether to run tests on `web`, `android`, or `ios`.
+
+- Set `platformType=web` to run Selenium browser tests (default).
+- Set `platformType=android` or `ios` to run mobile tests. This
+  requires [Appium](https://appium.io/) to be installed; specify the path
+  to `main.js` via the `appiumJSPath` property if it cannot be detected
+  automatically.
+
 ## Requirements
 
-- Java 17
+-  Java 17 (or newer). The project now uses AspectJ 1.9.24 which is
+   compatible with recent JDK releases, including JDK 24.
 - Lombok plugin enabled in your IDE (with annotation processing)
 
