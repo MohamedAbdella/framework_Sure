@@ -1,12 +1,7 @@
 #!/bin/bash
 
-# Step 1: Run your tests
-echo "Running tests..."
-mvn clean test
+# Step 1: Generate the Allure report
 
-# Step 2: Generate the Allure report
-echo "Generating Allure report..."
-allure generate --clean
 
 # Step 3: Serve the Allure report
 echo "Serving Allure report..."

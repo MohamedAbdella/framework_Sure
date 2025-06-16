@@ -11,16 +11,16 @@ import static com.sure.base.DriverManager.*;
 
 @Log4j2
 public class TestBase {
-    protected DriverManager driverManager;
+    public DriverManager driverManager;
     protected JsonFileManager jsonFileManagerLoginTestData;
     protected TestNGListener testNGListener;
+
 
 
     @BeforeClass
     public void setUp() throws Exception {
         log.info("Setting up the driver / server");
         driverManager = new DriverManager();
-        testNGListener = new TestNGListener();
         jsonFileManagerLoginTestData = new JsonFileManager();
         jsonFileManagerLoginTestData.getJsonFilePath("testDataFolderPath", "Login.json");
 

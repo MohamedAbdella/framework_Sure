@@ -28,7 +28,7 @@ public class PageBase {
     public PageBase(DriverManager driverManager) {
         this.driverManager = driverManager;
         this.driver = driverManager.getDriver();
-        this.configManager = new ConfigManager();
+        this.configManager = ConfigManager.getInstance();
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         this.js = (JavascriptExecutor) driver;
     }
@@ -161,8 +161,8 @@ public class PageBase {
             visibilityWaitForElementLocated(element);
             return driver.findElement(element).isDisplayed();
         } catch (Exception e) {
-            log.info("Couldn't find element: " + element + ". Exception: " + e.getMessage());
-            return false;
+            log.error("Couldn't find element: {}", element, e);
+            throw new RuntimeException("Element not displayed: " + element, e);
         }
     }
 
@@ -173,8 +173,8 @@ public class PageBase {
             visibilityWaitForElementLocated(element);
             return driver.findElement(element).isEnabled();
         } catch (Exception e) {
-            log.info("Couldn't find or interact with element: " + element + e.getMessage());
-            return false;
+            log.error("Couldn't interact with element: {}", element, e);
+            throw new RuntimeException("Element not enabled: " + element, e);
         }
     }
 
@@ -184,8 +184,8 @@ public class PageBase {
             visibilityWaitForElementLocated(element);
             return driver.findElement(element).getText();
         } catch (Exception e) {
-            log.info("Couldn't find or retrieve text from element: " + element + e.getMessage());
-            return "";
+            log.error("Couldn't retrieve text from element: {}", element, e);
+            throw new RuntimeException("Cannot get text from element: " + element, e);
         }
     }
 

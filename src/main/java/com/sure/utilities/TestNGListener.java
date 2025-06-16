@@ -1,7 +1,6 @@
 package com.sure.utilities;
 
 import com.sure.base.DriverManager;
-import com.sure.base.TestBase;
 import io.qameta.allure.Attachment;
 import io.qameta.allure.Step;
 import lombok.extern.log4j.Log4j2;
@@ -17,13 +16,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 @Log4j2
-public class TestNGListener extends TestBase implements ITestListener {
+public class TestNGListener implements ITestListener {
     Path screenshotFolderPath;
     public static Path screenRecordingFolderPath;
     byte[] screenshotBytes;
 
     public TestNGListener() {
-        driverManager = new DriverManager();
         screenshotFolderPath = FilesDirectories.createDir("/attachments/screenshots");
         screenRecordingFolderPath = FilesDirectories.createDir("/attachments/videos");
         try {
@@ -39,16 +37,20 @@ public class TestNGListener extends TestBase implements ITestListener {
     public void onTestFailure(ITestResult result) {
         String methodName = result.getMethod().getMethodName();
         log.error("methodName:" + methodName);
-        // Attach screenshot to Allure report
-        attachScreenshotToAllure(methodName);
-        // Save screenshot locally
-        saveScreenshotLocally(methodName);
-        // Log the failure
+        if (result.getInstance() instanceof com.sure.base.TestBase testBase) {
+            DriverManager dm = testBase.driverManager;
+            // Attach screenshot to Allure report
+            attachScreenshotToAllure(dm, methodName);
+            // Save screenshot locally
+            saveScreenshotLocally(dm, methodName);
+        } else {
+            log.error("Test instance is not of type TestBase");
+        }
         log.error("Failure for " + methodName);
     }
 
     @Attachment(value = "Screenshot for the failure", type = "image/png", fileExtension = ".png")
-    public byte[] attachScreenshotToAllure(String methodName) {
+    public byte[] attachScreenshotToAllure(DriverManager driverManager, String methodName) {
         screenshotBytes = null;
 
         if (driverManager.getDriver() instanceof TakesScreenshot takesscreenshot) {
@@ -65,7 +67,7 @@ public class TestNGListener extends TestBase implements ITestListener {
     }
 
     @Step("Saving screenshot Locally for {methodName}")
-    private void saveScreenshotLocally(String methodName) {
+    private void saveScreenshotLocally(DriverManager driverManager, String methodName) {
         if (driverManager.getDriver() instanceof TakesScreenshot takesscreenshot) {
             try {
                 // Capture screenshot as a byte array

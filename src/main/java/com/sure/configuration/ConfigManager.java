@@ -13,9 +13,10 @@ import java.util.Properties;
 
 @Log4j2
 public class ConfigManager {
+    private static ConfigManager instance;
     private final Map<String, Properties> propertiesMap;
 
-    public ConfigManager() {
+    private ConfigManager() {
         propertiesMap = new HashMap<>();
         loadPathsProperties();
         // Get the properties folder path from the configuration
@@ -56,6 +57,13 @@ public class ConfigManager {
             log.error("Failed to load properties from directory:{}", directory.toAbsolutePath(), e);
             throw new RuntimeException("Failed to load properties from directory: " + directory.toAbsolutePath(), e);
         }
+    }
+
+    public static synchronized ConfigManager getInstance() {
+        if (instance == null) {
+            instance = new ConfigManager();
+        }
+        return instance;
     }
 
     private void loadProperties(Path filePath) {
