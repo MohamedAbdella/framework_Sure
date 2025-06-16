@@ -21,9 +21,10 @@ public class LoginTest extends TestBase {
         log.info("Password: {}", password);
 
         new LoginPage(driverManager).navigateTo(url);
-        boolean checkHomeDashboardIsOpened = new LoginPage(driverManager)
+       boolean checkHomeDashboardIsOpened = new LoginPage(driverManager)
                 .login(email, password)
                 .checkHomeDashboardIsOpened("الرئيسية");
         Assert.assertTrue(checkHomeDashboardIsOpened);
+
     }
 }

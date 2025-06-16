@@ -13,8 +13,6 @@ import static com.sure.base.DriverManager.*;
 public class TestBase {
     public DriverManager driverManager;
     protected JsonFileManager jsonFileManagerLoginTestData;
-    protected TestNGListener testNGListener;
-
 
 
     @BeforeClass
