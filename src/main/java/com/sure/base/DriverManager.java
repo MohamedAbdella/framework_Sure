@@ -44,7 +44,7 @@ public class DriverManager {
 
     public DriverManager() {
         this.driver = new ThreadLocal<>();
-        this.configManager = new ConfigManager();
+        this.configManager = ConfigManager.getInstance();
     }
 
     public void setExecutionType() throws Exception {

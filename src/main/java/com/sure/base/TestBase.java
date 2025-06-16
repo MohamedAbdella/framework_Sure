@@ -2,8 +2,8 @@ package com.sure.base;
 
 import com.sure.utilities.*;
 import lombok.extern.log4j.Log4j2;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 
 import java.io.IOException;
 
@@ -13,14 +13,12 @@ import static com.sure.base.DriverManager.*;
 public class TestBase {
     protected DriverManager driverManager;
     protected JsonFileManager jsonFileManagerLoginTestData;
-    protected TestNGListener testNGListener;
 
 
-    @BeforeClass
+    @BeforeMethod
     public void setUp() throws Exception {
         log.info("Setting up the driver / server");
         driverManager = new DriverManager();
-        testNGListener = new TestNGListener();
         jsonFileManagerLoginTestData = new JsonFileManager();
         jsonFileManagerLoginTestData.getJsonFilePath("testDataFolderPath", "Login.json");
 
@@ -31,7 +29,7 @@ public class TestBase {
         }
     }
 
-    @AfterClass
+    @AfterMethod
     public void tearDown() throws Exception {
         log.info("Tearing down the driver / server ");
         if (isMobilePlatform()) {

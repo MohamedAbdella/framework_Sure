@@ -1,10 +1,6 @@
 #!/bin/bash
 
-# Step 1: Run your tests
-echo "Running tests..."
-mvn clean test
-
-# Step 2: Generate the Allure report
+# Step 1: Generate the Allure report
 echo "Generating Allure report..."
 allure generate --clean
 

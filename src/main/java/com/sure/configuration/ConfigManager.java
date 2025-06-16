@@ -13,9 +13,10 @@ import java.util.Properties;
 
 @Log4j2
 public class ConfigManager {
+    private static ConfigManager instance;
     private final Map<String, Properties> propertiesMap;
 
-    public ConfigManager() {
+    private ConfigManager() {
         propertiesMap = new HashMap<>();
         loadPathsProperties();
         // Get the properties folder path from the configuration
@@ -31,6 +32,13 @@ public class ConfigManager {
         propertiesFolderPath = System.getProperty("user.dir") + propertiesFolderPath;
         log.info("Full properties folder path: " + propertiesFolderPath);
         loadPropertiesFromDirectory(propertiesFolderPath);
+    }
+
+    public static synchronized ConfigManager getInstance() {
+        if (instance == null) {
+            instance = new ConfigManager();
+        }
+        return instance;
     }
 
     private void loadPathsProperties() {

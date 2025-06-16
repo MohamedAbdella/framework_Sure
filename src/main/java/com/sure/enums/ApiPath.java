@@ -8,7 +8,7 @@ import lombok.extern.log4j.Log4j2;
 public class ApiPath {
 
     static String baseAPIPath;
-    static String environmentName = new ConfigManager().getProperty("environmentName");
+    static String environmentName = ConfigManager.getInstance().getProperty("environmentName");
 
     public static String setBaseAPIPath() {
         switch (environmentName) {
@@ -29,9 +29,9 @@ public class ApiPath {
 
     @Getter
     public enum apiPath {
-        LOGIN(new ConfigManager().getProperty("baseAPIPath") + "/login-by-criteria"),
-        ADD_ACTIONS(new ConfigManager().getProperty("baseAPIPath") + "/actions"),
-        START_VOTING(new ConfigManager().getProperty("baseAPIPath") + "/actions/start-vote");
+        LOGIN(ConfigManager.getInstance().getProperty("baseAPIPath") + "/login-by-criteria"),
+        ADD_ACTIONS(ConfigManager.getInstance().getProperty("baseAPIPath") + "/actions"),
+        START_VOTING(ConfigManager.getInstance().getProperty("baseAPIPath") + "/actions/start-vote");
 
         private final String value;
 
