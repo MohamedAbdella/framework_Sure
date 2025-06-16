@@ -20,7 +20,7 @@ public class AppiumServer {
 
     public static String startAppium() {
         String appiumUrl = "";
-        ConfigManager configManager = new ConfigManager();
+        ConfigManager configManager = ConfigManager.getInstance();
         String appiumJSPath = configManager.getProperty("appiumJSPath");
 
         AppiumServiceBuilder builder = new AppiumServiceBuilder()

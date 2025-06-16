@@ -15,7 +15,7 @@ function get_property {
 ANDROID_DEVICE_NAME=$(get_property "androidDeviceName")
 
 # Ensure your Android SDK path is set correctly
-ANDROID_HOME=~/Library/Android/sdk
+ANDROID_HOME=${ANDROID_HOME:-$HOME/Library/Android/sdk}
 EMULATOR=$ANDROID_HOME/emulator/emulator
 ADB=$ANDROID_HOME/platform-tools/adb
 
@@ -23,8 +23,8 @@ ADB=$ANDROID_HOME/platform-tools/adb
 echo "Starting Android Emulator: $ANDROID_DEVICE_NAME"
 $EMULATOR -avd "$ANDROID_DEVICE_NAME" &
 
-# Wait for the emulator to start (adjust the sleep duration as needed)
-sleep 30
+# Wait briefly for the emulator to start
+sleep 15
 
 # Check if the emulator started successfully
 EMULATOR_RUNNING=$($ADB devices | grep -c emulator)

@@ -19,7 +19,7 @@ public final class JsonFileManager {
 
     // Constructor to initialize config manager
     public JsonFileManager() {
-        this.configManager = new ConfigManager();
+        this.configManager = ConfigManager.getInstance();
     }
 
     private JsonObject readJSONFile(String folderName, String filePath) throws FileNotFoundException {
