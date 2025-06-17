@@ -8,6 +8,7 @@ import org.testng.annotations.BeforeClass;
 import java.io.IOException;
 
 import static com.sure.base.DriverManager.*;
+import com.sure.configuration.ConfigKeys;
 
 @Log4j2
 public class TestBase {
@@ -85,6 +86,6 @@ public class TestBase {
     }
 
     private String getPlatform() {
-        return driverManager.getConfigManager().getProperty("platformType");
+        return driverManager.getConfigManager().getProperty(ConfigKeys.PLATFORM_TYPE);
     }
 }
