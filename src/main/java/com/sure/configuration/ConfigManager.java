@@ -7,43 +7,30 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Properties;
 
 @Log4j2
 public class ConfigManager {
     private static ConfigManager instance;
-    private final Map<String, Properties> propertiesMap;
+    private final Properties properties = new Properties();
 
     private ConfigManager() {
-        propertiesMap = new HashMap<>();
         loadPathsProperties();
-        // Get the properties folder path from the configuration
-        String propertiesFolderPath = getProperty("propertiesFolderPath");
-        log.info("Retrieved propertiesFolderPath: " + propertiesFolderPath);
-
-        // Validate and use the properties folder path
+        String propertiesFolderPath = getProperty(ConfigKeys.PROPERTIES_FOLDER_PATH);
         if (propertiesFolderPath == null || propertiesFolderPath.trim().isEmpty()) {
-            throw new RuntimeException("The 'propertiesFolderPath' property is not set or is empty.");
+            throw new RuntimeException("'propertiesFolderPath' is not set");
         }
-
-        // Construct the full path
         propertiesFolderPath = System.getProperty("user.dir") + propertiesFolderPath;
-        log.info("Full properties folder path: " + propertiesFolderPath);
         loadPropertiesFromDirectory(propertiesFolderPath);
     }
 
     private void loadPathsProperties() {
         Path path = Paths.get(System.getProperty("user.dir"), "src", "main", "resources", "properties", "path.properties");
         try (var inputStream = Files.newInputStream(path)) {
-            Properties pathsProperties = new Properties();
-            pathsProperties.load(inputStream);
-            propertiesMap.put("path.properties", pathsProperties);
-            log.info("Loaded paths properties from: " + path);
+            properties.load(inputStream);
+            log.info("Loaded path properties from {}", path);
         } catch (IOException e) {
-            log.error("Failed to load paths properties file: " + path, e);
-            throw new RuntimeException("Failed to load paths properties file: " + path, e);
+            throw new RuntimeException("Failed to load path properties", e);
         }
     }
 
@@ -51,11 +38,11 @@ public class ConfigManager {
         Path directory = Paths.get(directoryPath);
         try (DirectoryStream<Path> stream = Files.newDirectoryStream(directory, "*.properties")) {
             for (Path entry : stream) {
+                if (entry.getFileName().toString().equals("path.properties")) continue;
                 loadProperties(entry);
             }
         } catch (IOException e) {
-            log.error("Failed to load properties from directory:{}", directory.toAbsolutePath(), e);
-            throw new RuntimeException("Failed to load properties from directory: " + directory.toAbsolutePath(), e);
+            throw new RuntimeException("Failed to load properties from directory: " + directory, e);
         }
     }
 
@@ -68,26 +55,29 @@ public class ConfigManager {
 
     private void loadProperties(Path filePath) {
         try (var inputStream = Files.newInputStream(filePath)) {
-            Properties properties = new Properties();
-            properties.load(inputStream);
-            propertiesMap.put(filePath.getFileName().toString(), properties);
-            log.info("Loaded properties from file: " + filePath);
+            Properties props = new Properties();
+            props.load(inputStream);
+            properties.putAll(props);
+            log.info("Loaded properties from {}", filePath);
         } catch (IOException e) {
-            log.error("Failed to load properties file: " + filePath.toAbsolutePath(), e);
-            throw new RuntimeException("Failed to load properties file: " + filePath.toAbsolutePath(), e);
+            throw new RuntimeException("Failed to load properties file: " + filePath, e);
         }
     }
 
     public String getProperty(String key) {
-        // Log each property retrieval for debugging
-        for (Map.Entry<String, Properties> entry : propertiesMap.entrySet()) {
-            log.info("Checking properties file: " + entry.getKey());
-            Properties properties = entry.getValue();
-            String value = properties.getProperty(key);
-            if (value != null) {
-                return value;
-            }
+        return properties.getProperty(key);
+    }
+
+    public boolean getBooleanProperty(String key) {
+        return Boolean.parseBoolean(getProperty(key));
+    }
+
+    public int getIntProperty(String key) {
+        String value = getProperty(key);
+        try {
+            return Integer.parseInt(value);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Property '" + key + "' is not an integer: " + value);
         }
-        return null;
     }
 }
