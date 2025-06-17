@@ -124,6 +124,10 @@ public class ScreenRecordingService {
     }
 
     private void convertAviToMp4(File inputFile, File outputFile) {
+        if (!isFfmpegAvailable()) {
+            log.warn("ffmpeg is not available. Skipping video conversion.");
+            return;
+        }
         try {
             ProcessBuilder processBuilder = new ProcessBuilder("ffmpeg", "-i", inputFile.getAbsolutePath(),
                     "-vcodec", "libx264", "-acodec", "aac", outputFile.getAbsolutePath());
@@ -134,8 +138,19 @@ public class ScreenRecordingService {
             } else {
                 log.error("ffmpeg exited with code {}", exitCode);
             }
-        } catch (Exception e) {
+        } catch (IOException | InterruptedException e) {
             log.error("Failed to convert video", e);
+            Thread.currentThread().interrupt();
+        }
+    }
+
+    private boolean isFfmpegAvailable() {
+        try {
+            Process process = new ProcessBuilder("ffmpeg", "-version").start();
+            int exit = process.waitFor();
+            return exit == 0;
+        } catch (Exception e) {
+            return false;
         }
     }
 
