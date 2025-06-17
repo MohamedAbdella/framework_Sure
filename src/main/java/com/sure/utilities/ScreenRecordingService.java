@@ -151,6 +151,7 @@ public class ScreenRecordingService {
             return exit == 0;
         } catch (Exception e) {
             return false;
+
         }
     }
 
