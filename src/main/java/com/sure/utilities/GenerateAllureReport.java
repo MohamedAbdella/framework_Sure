@@ -12,15 +12,27 @@ public final class GenerateAllureReport {
     private GenerateAllureReport() {
     }
 
-    private static void executeCommand(String command) throws IOException {
-        ProcessBuilder processBuilder = new ProcessBuilder(command.split("\\s+"));
-        processBuilder.start();
+    private static void executeCommand(String... command) throws IOException {
+        new ProcessBuilder(command).start();
     }
 
     public static void openAllureReport() throws IOException, InterruptedException {
-        String scriptPath = USER_DIR + "/src/main/resources/generateAllureReport.sh";
-        log.info("scriptPath: {}", scriptPath);
-        executeCommand(scriptPath);
+        String os = System.getProperty("os.name").toLowerCase();
+        if (os.contains("win")) {
+            try {
+                executeCommand("cmd", "/c", "allure", "serve");
+            } catch (IOException e) {
+                log.error("Failed to open Allure report on Windows", e);
+            }
+        } else {
+            String scriptPath = USER_DIR + "/src/main/resources/generateAllureReport.sh";
+            log.info("scriptPath: {}", scriptPath);
+            try {
+                executeCommand("bash", scriptPath);
+            } catch (IOException e) {
+                log.error("Failed to execute Allure script", e);
+            }
+        }
         TimeUnit.SECONDS.sleep(9);
     }
 }
