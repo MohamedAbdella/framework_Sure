@@ -28,12 +28,26 @@ import static com.sure.utilities.TestNGListener.screenRecordingFolderPath;
 import static org.monte.media.FormatKeys.*;
 import static org.monte.media.VideoFormatKeys.*;
 
+/**
+ * Handles starting and stopping screen recordings on different platforms.
+ * <p>
+ * The class supports Android, iOS and Web driver types. It delegates the
+ * appropriate Appium or desktop recording APIs depending on the platform value
+ * configured via {@link ConfigManager}. Recorded files are stored under the
+ * directories prepared by {@link TestNGListener}.
+ */
 @Log4j2
 public class ScreenRecordingService {
 
     private final ConfigManager configManager = ConfigManager.getInstance();
     private ScreenRecorder webScreenRecorder;
 
+    /**
+     * Starts a new screen recording for the given driver based on platform
+     * configuration.
+     *
+     * @param driver current test driver instance
+     */
     public void startRecording(WebDriver driver) {
         String platform = configManager.getProperty(ConfigKeys.PLATFORM_TYPE);
         try {
@@ -49,6 +63,13 @@ public class ScreenRecordingService {
         }
     }
 
+    /**
+     * Stops the recording for the provided driver and saves it with the test
+     * class name as part of the file.
+     *
+     * @param driver    driver used for recording
+     * @param className test class name used in the saved file
+     */
     public void stopRecording(WebDriver driver, String className) {
         String platform = configManager.getProperty(ConfigKeys.PLATFORM_TYPE);
         try {
@@ -64,6 +85,9 @@ public class ScreenRecordingService {
         }
     }
 
+    /**
+     * Starts recording for an iOS driver using the Appium API.
+     */
     private void startIOSRecording(WebDriver driver) {
         if (driver instanceof CanRecordScreen screenRecorder) {
             screenRecorder.startRecordingScreen(new IOSStartScreenRecordingOptions()
@@ -74,6 +98,9 @@ public class ScreenRecordingService {
         }
     }
 
+    /**
+     * Stops recording for an iOS driver and writes the video to disk.
+     */
     private void stopIOSRecording(WebDriver driver, String className) {
         if (driver instanceof CanRecordScreen screenRecorder) {
             String base64 = screenRecorder.stopRecordingScreen(new IOSStopScreenRecordingOptions());
@@ -81,6 +108,9 @@ public class ScreenRecordingService {
         }
     }
 
+    /**
+     * Starts recording for an Android driver using Appium options.
+     */
     private void startAndroidRecording(WebDriver driver) {
         if (driver instanceof CanRecordScreen screenRecorder) {
             screenRecorder.startRecordingScreen(new AndroidStartScreenRecordingOptions()
@@ -90,6 +120,9 @@ public class ScreenRecordingService {
         }
     }
 
+    /**
+     * Stops recording for an Android driver and stores the output file.
+     */
     private void stopAndroidRecording(WebDriver driver, String className) {
         if (driver instanceof CanRecordScreen screenRecorder) {
             String base64 = screenRecorder.stopRecordingScreen(new AndroidStopScreenRecordingOptions());
@@ -97,6 +130,10 @@ public class ScreenRecordingService {
         }
     }
 
+    /**
+     * Initiates recording on desktop browsers using the Monte Screen Recorder
+     * library.
+     */
     private void startWebRecording() throws IOException, AWTException {
         GraphicsConfiguration gc = GraphicsEnvironment.getLocalGraphicsEnvironment()
                 .getDefaultScreenDevice().getDefaultConfiguration();
@@ -110,6 +147,9 @@ public class ScreenRecordingService {
         webScreenRecorder.start();
     }
 
+    /**
+     * Stops the desktop screen recorder and converts the file to MP4 format.
+     */
     private void stopWebRecording(String className) throws IOException {
         if (webScreenRecorder != null) {
             webScreenRecorder.stop();
@@ -123,6 +163,10 @@ public class ScreenRecordingService {
         }
     }
 
+    /**
+     * Uses ffmpeg to convert the recorded AVI file to MP4 format. If ffmpeg is
+     * not available the method logs a warning and skips conversion.
+     */
     private void convertAviToMp4(File inputFile, File outputFile) {
         if (!isFfmpegAvailable()) {
             log.warn("ffmpeg is not available. Skipping video conversion.");
@@ -144,6 +188,9 @@ public class ScreenRecordingService {
         }
     }
 
+    /**
+     * Checks whether ffmpeg is installed on the host machine.
+     */
     private boolean isFfmpegAvailable() {
         try {
             Process process = new ProcessBuilder("ffmpeg", "-version").start();
@@ -155,6 +202,9 @@ public class ScreenRecordingService {
         }
     }
 
+    /**
+     * Decodes the base64 video data and saves it to the recording directory.
+     */
     private void saveVideo(String base64String, String className, String platform) {
         try {
             byte[] data = Base64.decodeBase64(base64String);

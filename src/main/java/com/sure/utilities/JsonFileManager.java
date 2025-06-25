@@ -12,17 +12,25 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+/**
+ * Utility for reading JSON files stored under paths configured in
+ * {@link ConfigManager}. Provides helper methods to retrieve test data values.
+ */
 @Log4j2
 public final class JsonFileManager {
     private JsonObject jsonObject;
     private final ConfigManager configManager;
 
-    // Constructor to initialize config manager
+    /** Creates a new instance with access to the global configuration. */
     public JsonFileManager() {
         this.configManager = ConfigManager.getInstance();
 
     }
 
+    /**
+     * Reads a JSON file from the given folder and returns it as a
+     * {@link JsonObject}.
+     */
     private JsonObject readJSONFile(String folderName, String filePath) throws FileNotFoundException {
         FileReader fileReader = new FileReader(System.getProperty("user.dir") + configManager.getProperty(folderName) + filePath);
         log.info("JSON file: {}", fileReader);
@@ -36,10 +44,16 @@ public final class JsonFileManager {
 
     }
 
+    /**
+     * Loads the JSON file so that values can be queried.
+     */
     public void getJsonFilePath(String folderName, String filePath) throws FileNotFoundException {
         this.jsonObject = readJSONFile(folderName, filePath);
     }
 
+    /**
+     * Retrieves a value from the loaded JSON using a dotted path expression.
+     */
     public String getTestData(String jsonPath) {
         try {
             if (jsonObject == null) {
@@ -71,6 +85,9 @@ public final class JsonFileManager {
     }
 
 
+    /**
+     * Reads the entire JSON file as raw string content.
+     */
     public String getJsonFileContent(String folderName, String filePath) {
         try {
             return new String(Files.readAllBytes(Paths.get(System.getProperty("user.dir") + configManager.getProperty(folderName) + filePath)));

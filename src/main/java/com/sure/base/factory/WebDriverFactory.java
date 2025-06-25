@@ -20,6 +20,10 @@ import java.time.Duration;
 @Log4j2
 public class WebDriverFactory implements DriverSetup {
 
+    /**
+     * Entry point for creating a web driver. Depending on the execution type
+     * configuration it delegates to either a local or remote driver setup.
+     */
     @Override
     public WebDriver createDriver(ConfigManager configManager) throws Exception {
         String execution = configManager.getProperty(ConfigKeys.EXECUTE_TYPE);
@@ -29,6 +33,11 @@ public class WebDriverFactory implements DriverSetup {
         return createLocalWebDriver(configManager);
     }
 
+    /**
+     * Creates a driver instance on the local machine using the requested browser.
+     *
+     * @return configured local {@link WebDriver}
+     */
     private WebDriver createLocalWebDriver(ConfigManager configManager) throws Exception {
         String browser = configManager.getProperty(ConfigKeys.WEB_BROWSER_NAME).toLowerCase();
         WebDriver driver = switch (browser) {
@@ -43,6 +52,9 @@ public class WebDriverFactory implements DriverSetup {
         return driver;
     }
 
+    /**
+     * Configures common Chrome options including optional headless mode.
+     */
     private ChromeOptions setupChromeOptions() {
         ChromeOptions options = new ChromeOptions();
         if (Boolean.parseBoolean(System.getProperty("headless", "false"))) {
@@ -52,6 +64,11 @@ public class WebDriverFactory implements DriverSetup {
         return options;
     }
 
+    /**
+     * Creates a driver that connects to a remote Selenium hub.
+     *
+     * @return configured remote driver instance
+     */
     private WebDriver createRemoteWebDriver(ConfigManager configManager) throws Exception {
         String browser = configManager.getProperty(ConfigKeys.WEB_BROWSER_NAME).toLowerCase();
         var options = switch (browser) {

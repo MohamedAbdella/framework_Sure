@@ -16,6 +16,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
+/**
+ * Collection of file and directory helper methods used throughout the tests.
+ * Provides creation, reading and cleanup utilities that log their actions and
+ * are annotated for Allure reporting.
+ */
 @Log4j2
 public class FilesDirectories {
     private FilesDirectories() {
@@ -24,6 +29,12 @@ public class FilesDirectories {
     public static final String USER_DIR = System.getProperty("user.dir");
     private static final String DOWNLOAD_DIR = USER_DIR + File.separator + "attachments/downloadedFiles" + File.separator + "Download";
 
+    /**
+     * Ensures that the given directory exists relative to the project root.
+     *
+     * @param path relative directory path
+     * @return the created or existing directory path
+     */
     @Step("Create directory: {path}")
     public static Path createDir(String path) {
         Path dirPath = Paths.get(USER_DIR + path);
@@ -40,6 +51,9 @@ public class FilesDirectories {
         return dirPath;
     }
 
+    /**
+     * Creates a file and writes the provided content into it.
+     */
     @Step("Create file: {fileNameWithPath} with content")
     public static void createFile(String fileNameWithPath, String content) {
         Path path = Paths.get(USER_DIR + fileNameWithPath);
@@ -56,6 +70,12 @@ public class FilesDirectories {
         }
     }
 
+    /**
+     * Reads the entire content of a file as a string.
+     *
+     * @param filePath path relative to the project directory
+     * @return file content or {@code null} when unreadable
+     */
     @Step("Read data from file: {filePath}")
     public static String readFileData(String filePath) {
         Path path = Paths.get(USER_DIR + filePath);
@@ -67,6 +87,10 @@ public class FilesDirectories {
         }
     }
 
+    /**
+     * Parses the given CSV file into a list of rows, each represented as a list
+     * of column values.
+     */
     @Step("Read CSV data from file: {filePath}")
     public static List<List<String>> getCsvData(String filePath) {
         List<List<String>> lines = new ArrayList<>();
@@ -81,6 +105,10 @@ public class FilesDirectories {
         return lines;
     }
 
+    /**
+     * Retrieves a value from the last row of the CSV based on the provided
+     * header name.
+     */
     @Step("Get CSV value for header: {headerName}")
     public static String getCsvValue(List<List<String>> list, String headerName) {
         headerName = "\"" + headerName + "\"";
@@ -91,6 +119,10 @@ public class FilesDirectories {
         return null;
     }
 
+    /**
+     * Polls the download directory for a file that matches the expected name
+     * and extension within the given timeout.
+     */
     @Step("Check if file: {expectedFileName} with extension: {fileExtension} is downloaded within timeout: {timeOut}")
     public static boolean isFileDownloaded(String expectedFileName, String fileExtension, int timeOut, long startTime) {
         createDir(DOWNLOAD_DIR);
@@ -117,6 +149,9 @@ public class FilesDirectories {
         return fileDownloaded;
     }
 
+    /**
+     * Renames a file within a directory.
+     */
     @Step("Rename file from: {oldFileName} to: {newFileName}.{fileExtension} in directory: {dirPath}")
     public static boolean renameFile(String dirPath, String oldFileName, String newFileName, String fileExtension) {
         Path oldFilePath = Paths.get(dirPath, oldFileName);
@@ -131,6 +166,9 @@ public class FilesDirectories {
         }
     }
 
+    /**
+     * Deletes all files inside the specified directory.
+     */
     @Step("Clean directory: {dirPath}")
     public static void cleanDirectory(String dirPath) {
         try {
@@ -141,6 +179,9 @@ public class FilesDirectories {
         }
     }
 
+    /**
+     * Verifies if a directory contains any files.
+     */
     @Step("Check if directory: {dirPath} is empty")
     public static boolean isDirectoryEmpty(String dirPath) {
         try {
@@ -165,11 +206,17 @@ public class FilesDirectories {
         }
     }
 
+    /**
+     * Returns the names of all files in the default download directory.
+     */
     @Step("Get file names from download directory")
     public static List<String> getFileNames() {
         return getFileNames(DOWNLOAD_DIR);
     }
 
+    /**
+     * Lists all file names in a specified directory.
+     */
     @Step("Get file names from directory: {dirPath}")
     public static List<String> getFileNames(String dirPath) {
         Path path = Paths.get(dirPath);
@@ -187,6 +234,9 @@ public class FilesDirectories {
         }
     }
 
+    /**
+     * Finds the first file in a folder that matches the supplied name and extension.
+     */
     @Step("Get file name containing: {fileName} with extension: {extension} from folder: {folderPath}")
     public static String getFileName(String folderPath, String fileName, String extension) {
         try (Stream<Path> stream = Files.list(Paths.get(folderPath))) {
@@ -201,11 +251,17 @@ public class FilesDirectories {
         }
     }
 
+    /**
+     * Checks whether the provided directory path exists.
+     */
     @Step("Check if directory exists: {directoryPath}")
     public static boolean isDirectoryExist(String directoryPath) {
         return Files.exists(Paths.get(directoryPath));
     }
 
+    /**
+     * Deletes the directory and all of its contents.
+     */
     @Step("Delete directory: {directoryPath}")
     public static void deleteDirectory(String directoryPath) {
         try {
@@ -216,6 +272,9 @@ public class FilesDirectories {
         }
     }
 
+    /**
+     * Moves a directory from one location to another.
+     */
     @Step("Move directory from: {sourceDir} to: {destinationDir}")
     public static void moveDir(String sourceDir, String destinationDir) {
         Path srcPath = Paths.get(USER_DIR, sourceDir);

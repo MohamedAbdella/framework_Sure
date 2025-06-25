@@ -64,7 +64,25 @@ public class ConfigManager {
         }
     }
 
+    /**
+     * Retrieves a configuration value with optional overrides.
+     * <p>
+     * The method first checks JVM system properties followed by
+     * environment variables. If none are found, it falls back to the
+     * properties loaded from the configuration files.
+     *
+     * @param key property name to look up
+     * @return resolved configuration value or {@code null} if missing
+     */
     public String getProperty(String key) {
+        String override = System.getProperty(key);
+        if (override != null) {
+            return override;
+        }
+        override = System.getenv(key);
+        if (override != null) {
+            return override;
+        }
         return properties.getProperty(key);
     }
 

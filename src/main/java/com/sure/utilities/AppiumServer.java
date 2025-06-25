@@ -10,6 +10,10 @@ import java.io.InputStreamReader;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 
+/**
+ * Utility class that starts and stops a local Appium server instance. It tries
+ * to auto-detect the Appium installation path if not explicitly configured.
+ */
 @Log4j2
 public class AppiumServer {
     private AppiumServer() {
@@ -18,6 +22,13 @@ public class AppiumServer {
     @Getter
     private static AppiumDriverLocalService service;
 
+    /**
+     * Starts the Appium server and returns its URL. The method looks for the
+     * Appium main script either from configuration, via npm detection, or via
+     * common install locations.
+     *
+     * @return service URL when started or {@code null} on failure
+     */
     public static String startAppium() {
         String appiumUrl = "";
         ConfigManager configManager = ConfigManager.getInstance();
@@ -102,6 +113,9 @@ public class AppiumServer {
         return appiumUrl;
     }
 
+    /**
+     * Stops the Appium service if it is running.
+     */
     public static void stopAppium() {
         if (service != null && service.isRunning()) {
             service.stop();
