@@ -13,6 +13,13 @@ import java.net.URL;
 @Log4j2
 public class IOSDriverFactory implements DriverSetup {
 
+    /**
+     * Builds an iOS driver using the settings from the given configuration and
+     * connects to a running Appium server.
+     *
+     * @param configManager configuration access for iOS specific options
+     * @return configured {@link WebDriver} for iOS tests
+     */
     @Override
     public WebDriver createDriver(ConfigManager configManager) throws Exception {
         XCUITestOptions options = new XCUITestOptions()

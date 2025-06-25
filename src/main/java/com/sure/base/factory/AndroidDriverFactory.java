@@ -14,6 +14,14 @@ import java.net.URL;
 @Log4j2
 public class AndroidDriverFactory implements DriverSetup {
 
+    /**
+     * Builds an {@link AndroidDriver} instance configured according to the
+     * provided {@link ConfigManager} settings. The method also ensures Appium is
+     * running and connects to it.
+     *
+     * @param configManager source of platform specific configuration values
+     * @return initialized {@link WebDriver} for Android tests
+     */
     @Override
     public WebDriver createDriver(ConfigManager configManager) throws Exception {
         UiAutomator2Options options = new UiAutomator2Options()

@@ -15,12 +15,19 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+/**
+ * TestNG listener that handles screenshot capture and video recording
+ * attachment when tests fail.
+ */
 @Log4j2
 public class TestNGListener implements ITestListener {
     Path screenshotFolderPath;
     public static Path screenRecordingFolderPath;
     byte[] screenshotBytes;
 
+    /**
+     * Creates the folders used for screenshot and video attachments.
+     */
     public TestNGListener() {
         screenshotFolderPath = FilesDirectories.createDir("/attachments/screenshots");
         screenRecordingFolderPath = FilesDirectories.createDir("/attachments/videos");
@@ -32,6 +39,11 @@ public class TestNGListener implements ITestListener {
         }
     }
 
+    /**
+     * Triggered by TestNG on test failure. Captures a screenshot through the
+     * {@link DriverManager} of the running {@code TestBase} instance and stores
+     * it locally and within the Allure report.
+     */
     @Override
     @Step("Test Failed")
     public void onTestFailure(ITestResult result) {
@@ -49,6 +61,13 @@ public class TestNGListener implements ITestListener {
         log.error("Failure for " + methodName);
     }
 
+    /**
+     * Captures the screenshot bytes and attaches them to the Allure report.
+     *
+     * @param driverManager manager providing the driver instance
+     * @param methodName    the failed test method
+     * @return screenshot bytes or {@code null} when not available
+     */
     @Attachment(value = "Screenshot for the failure", type = "image/png", fileExtension = ".png")
     public byte[] attachScreenshotToAllure(DriverManager driverManager, String methodName) {
         screenshotBytes = null;
@@ -66,6 +85,9 @@ public class TestNGListener implements ITestListener {
         return screenshotBytes;
     }
 
+    /**
+     * Saves the screenshot to the local attachments directory for future reference.
+     */
     @Step("Saving screenshot Locally for {methodName}")
     private void saveScreenshotLocally(DriverManager driverManager, String methodName) {
         if (driverManager.getDriver() instanceof TakesScreenshot takesscreenshot) {

@@ -1,13 +1,5 @@
-.idea
-.settings
-target
-test-output
-.classpath
-.project
-screenshots
-allure-results
-allure-report
+.git
 logs
-/bin/
-/target/
-logs.log
+log
+target
+.DS_Store
