@@ -29,6 +29,11 @@ To generate and view the Allure report:
 ```bash
 allure serve
 ```
+Old reports are removed automatically before each run. A TestNG suite listener
+deletes the Allure results directory before tests start so only results from the
+current execution are included. The path is determined from the
+`allure.results.directory` system property when set, otherwise defaults to
+`target/allure-results`.
 
 ### Platform Configuration
 
