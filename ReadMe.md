@@ -29,8 +29,10 @@ To generate and view the Allure report:
 ```bash
 allure serve
 ```
-The framework automatically cleans `target/allure-results` before each run so
-old results never appear in new reports.
+Old reports are removed automatically before each run. A TestNG suite listener
+deletes `target/allure-results` so only results from the current execution are
+included.
+
 
 ### Platform Configuration
 

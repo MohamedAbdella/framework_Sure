@@ -21,11 +21,10 @@ import java.nio.file.Path;
  * attachment when tests fail.
  */
 @Log4j2
-public class TestNGListener implements ITestListener, IExecutionListener {
+public class TestNGListener implements ITestListener {
     Path screenshotFolderPath;
     public static Path screenRecordingFolderPath;
     byte[] screenshotBytes;
-    private static final String ALLURE_RESULTS_PATH = FilesDirectories.USER_DIR + "/target/allure-results";
 
     /**
      * Creates the folders used for screenshot and video attachments.
@@ -41,11 +40,6 @@ public class TestNGListener implements ITestListener, IExecutionListener {
         }
     }
 
-    @Override
-    public void onExecutionStart() {
-        log.info("Cleaning Allure results folder: {}", ALLURE_RESULTS_PATH);
-        FilesDirectories.deleteDirectory(ALLURE_RESULTS_PATH);
-    }
 
     /**
      * Triggered by TestNG on test failure. Captures a screenshot through the

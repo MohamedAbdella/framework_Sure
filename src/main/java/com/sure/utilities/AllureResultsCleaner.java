@@ -1,20 +1,18 @@
 package com.sure.utilities;
 
 import lombok.extern.log4j.Log4j2;
-import org.testng.IExecutionListener;
+import org.testng.ISuite;
+import org.testng.ISuiteListener;
 
 /**
- * TestNG {@link IExecutionListener} that cleans the Allure results directory
- * before the test suite begins. This ensures old results do not pollute
- * new reports.
+ * Suite listener that cleans the Allure results directory before tests run.
  */
 @Log4j2
-public class AllureResultsCleaner implements IExecutionListener {
-
+public class AllureResultsCleaner implements ISuiteListener {
     private static final String ALLURE_RESULTS_PATH = FilesDirectories.USER_DIR + "/target/allure-results";
 
     @Override
-    public void onExecutionStart() {
+    public void onStart(ISuite suite) {
         log.info("Cleaning Allure results folder: {}", ALLURE_RESULTS_PATH);
         FilesDirectories.deleteDirectory(ALLURE_RESULTS_PATH);
     }
