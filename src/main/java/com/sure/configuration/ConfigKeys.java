@@ -1,6 +1,18 @@
 package com.sure.configuration;
 
+/**
+ * Utility class holding all property keys used by {@link ConfigManager}.
+ * <p>
+ * The class is not intended to be instantiated; it simply centralizes
+ * string constants so that property names are consistent throughout the
+ * code base.
+ */
 public final class ConfigKeys {
+    /**
+     * Private constructor to prevent instantiation. All members are
+     * static so the class acts purely as a namespace for configuration
+     * keys.
+     */
     private ConfigKeys() {}
 
     public static final String PROPERTIES_FOLDER_PATH = "propertiesFolderPath";
