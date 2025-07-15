@@ -7,6 +7,7 @@ import lombok.extern.log4j.Log4j2;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
+import org.testng.IExecutionListener;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
 
@@ -20,10 +21,11 @@ import java.nio.file.Path;
  * attachment when tests fail.
  */
 @Log4j2
-public class TestNGListener implements ITestListener {
+public class TestNGListener implements ITestListener, IExecutionListener {
     Path screenshotFolderPath;
     public static Path screenRecordingFolderPath;
     byte[] screenshotBytes;
+    private static final String ALLURE_RESULTS_PATH = FilesDirectories.USER_DIR + "/target/allure-results";
 
     /**
      * Creates the folders used for screenshot and video attachments.
@@ -37,6 +39,12 @@ public class TestNGListener implements ITestListener {
         } catch (IOException e) {
             log.error("Failed to create directories for screenshots and screen recording", e);
         }
+    }
+
+    @Override
+    public void onExecutionStart() {
+        log.info("Cleaning Allure results folder: {}", ALLURE_RESULTS_PATH);
+        FilesDirectories.deleteDirectory(ALLURE_RESULTS_PATH);
     }
 
     /**

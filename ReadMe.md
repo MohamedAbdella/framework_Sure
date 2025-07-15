@@ -29,6 +29,8 @@ To generate and view the Allure report:
 ```bash
 allure serve
 ```
+The framework automatically cleans `target/allure-results` before each run so
+old results never appear in new reports.
 
 ### Platform Configuration
 

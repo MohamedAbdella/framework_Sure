@@ -264,8 +264,13 @@ public class FilesDirectories {
      */
     @Step("Delete directory: {directoryPath}")
     public static void deleteDirectory(String directoryPath) {
+        File dir = new File(directoryPath);
+        if (!dir.exists()) {
+            log.info("Directory does not exist: {}", directoryPath);
+            return;
+        }
         try {
-            FileUtils.forceDelete(new File(directoryPath));
+            FileUtils.deleteDirectory(dir);
             log.info("Directory deleted: {}", directoryPath);
         } catch (IOException e) {
             log.error("Failed to delete directory", e);
