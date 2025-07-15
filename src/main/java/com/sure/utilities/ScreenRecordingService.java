@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.Duration;
 
 import static com.sure.utilities.TestNGListener.screenRecordingFolderPath;
@@ -155,8 +156,10 @@ public class ScreenRecordingService {
             webScreenRecorder.stop();
             File recordedFile = webScreenRecorder.getCreatedMovieFiles().get(0);
             File newFile = new File(screenRecordingFolderPath.toString(), className + "_web.avi");
-            if (!recordedFile.renameTo(newFile)) {
-                log.error("Failed to move recorded file");
+            try {
+                Files.move(recordedFile.toPath(), newFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            } catch (IOException e) {
+                log.error("Failed to move recorded file", e);
             }
             Path mp4FilePath = screenRecordingFolderPath.resolve(className + "_web.mp4");
             convertAviToMp4(newFile, mp4FilePath.toFile());
