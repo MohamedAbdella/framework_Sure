@@ -17,3 +17,4 @@ public class AllureResultsCleaner implements IExecutionListener {
         FilesDirectories.deleteDirectory(resultsDir);
     }
 }
+
