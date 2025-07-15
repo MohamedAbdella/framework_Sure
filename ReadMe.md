@@ -33,6 +33,7 @@ Old reports are removed automatically before each run. A TestNG suite listener
 deletes `target/allure-results` so only results from the current execution are
 included.
 
+
 ### Platform Configuration
 
 The framework uses the `platformType` property in
