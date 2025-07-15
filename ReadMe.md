@@ -30,9 +30,10 @@ To generate and view the Allure report:
 allure serve
 ```
 Old reports are removed automatically before each run. A TestNG suite listener
-deletes `target/allure-results` so only results from the current execution are
-included.
-
+deletes the Allure results directory before tests start so only results from the
+current execution are included. The path is determined from the
+`allure.results.directory` system property when set, otherwise defaults to
+`target/allure-results`.
 
 ### Platform Configuration
 
