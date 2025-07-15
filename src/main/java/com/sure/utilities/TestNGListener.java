@@ -39,6 +39,7 @@ public class TestNGListener implements ITestListener {
         }
     }
 
+
     /**
      * Triggered by TestNG on test failure. Captures a screenshot through the
      * {@link DriverManager} of the running {@code TestBase} instance and stores
