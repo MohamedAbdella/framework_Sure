@@ -37,6 +37,22 @@ public class WaitUtils {
     }
 
     /**
+     * Waits until the element located by the locator is present in the DOM.
+     * This does not guarantee the element is visible.
+     */
+    public WebElement waitForPresence(By locator) {
+        return wait.until(ExpectedConditions.presenceOfElementLocated(locator));
+    }
+
+    /**
+     * Waits until the given text is present in the element located by the locator.
+     * Useful for elements whose text updates dynamically.
+     */
+    public void waitForTextToBePresent(By locator, String text) {
+        wait.until(ExpectedConditions.textToBePresentInElementLocated(locator, text));
+    }
+
+    /**
      * Waits for an element to become invisible.
      */
     public void waitForInvisibility(By locator) {
