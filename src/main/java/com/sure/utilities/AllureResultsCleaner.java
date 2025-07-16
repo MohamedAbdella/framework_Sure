@@ -8,7 +8,7 @@ import org.testng.IExecutionListener;
  */
 @Log4j2
 public class AllureResultsCleaner implements IExecutionListener {
-    private static final String DEFAULT_RESULTS_PATH = FilesDirectories.USER_DIR + "/target/allure-results";
+    private static final String DEFAULT_RESULTS_PATH = FilesDirectories.USER_DIR + "/allure-results";
 
     @Override
     public void onExecutionStart() {
