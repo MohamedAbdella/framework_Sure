@@ -75,6 +75,13 @@ public class PageBase {
     }
 
     /**
+     * Waits until the element is visible on the page.
+     */
+    protected void waitUntilVisible(By element) {
+        waitUtils.waitForVisibility(element);
+    }
+
+    /**
      * Waits until the specified element disappears from the DOM.
      *
      * @param element locator that should become invisible
@@ -138,6 +145,13 @@ public class PageBase {
     }
 
     /**
+     * Performs a safe click on the element handling common Selenium issues.
+     */
+    protected void safeClick(By element) {
+        actions.safeClick(element);
+    }
+
+    /**
      * Retrieves the current browser page title.
      *
      * @return page title string
@@ -154,6 +168,13 @@ public class PageBase {
      */
     protected boolean checkElementIsDisplayed(By element) {
         return actions.isDisplayed(element);
+    }
+
+    /**
+     * Checks if the element exists in the DOM regardless of visibility.
+     */
+    protected boolean isElementPresent(By element) {
+        return actions.isPresent(element);
     }
 
     /**
@@ -174,6 +195,13 @@ public class PageBase {
      */
     protected String getElementText(By element) {
         return actions.getText(element);
+    }
+
+    /**
+     * Scrolls until the provided element is within the viewport.
+     */
+    protected void scrollIntoView(By element) {
+        actions.scrollIntoView(element);
     }
 
     /** Scrolls the web page down to its bottom. */
