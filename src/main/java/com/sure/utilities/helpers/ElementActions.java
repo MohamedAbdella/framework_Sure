@@ -37,18 +37,6 @@ public class ElementActions {
         }
     }
 
-    /**
-     * Attempts to click the element while handling common interaction issues.
-     * This method waits for the element to be clickable and if the standard
-     * click fails it falls back to a JavaScript click.
-     */
-    public void safeClick(By locator) {
-        try {
-            wait.waitForClickable(locator).click();
-        } catch (Exception e) {
-            js.executeScript("arguments[0].click();", driver.findElement(locator));
-        }
-    }
 
     /**
      * Sends text to the element after waiting for its visibility.
@@ -97,14 +85,6 @@ public class ElementActions {
      */
     public String getText(By locator) {
         return wait.waitForVisibility(locator).getText();
-    }
-
-    /**
-     * Scrolls the page until the element is in view.
-     */
-    public void scrollToElement(By locator) {
-        WebElement element = driver.findElement(locator);
-        js.executeScript("arguments[0].scrollIntoView(true);", element);
     }
 
     /**

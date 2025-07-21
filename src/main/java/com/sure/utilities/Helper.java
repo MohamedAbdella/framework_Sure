@@ -27,14 +27,6 @@ public final class Helper {
         return data + time;
     }
 
-    /**
-     * Returns today's date formatted as {@code yyyy/MM/dd}.
-     */
-    public static String generateRandomDate() {
-        String todayDate = java.time.LocalDate.now().format(java.time.format.DateTimeFormatter.ofPattern("yyyy/MM/dd"));
-        log.info("Today'sDate :{}", todayDate);
-        return todayDate;
-    }
 
     /**
      * Splits the given text by a separator and returns the value at the

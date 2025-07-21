@@ -74,12 +74,6 @@ public class PageBase {
         waitUtils.waitForVisibility(element);
     }
 
-    /**
-     * Waits until the element is visible on the page.
-     */
-    protected void waitUntilVisible(By element) {
-        waitUtils.waitForVisibility(element);
-    }
 
     /**
      * Waits until the specified element disappears from the DOM.
@@ -144,12 +138,6 @@ public class PageBase {
         actions.click(element);
     }
 
-    /**
-     * Performs a safe click on the element handling common Selenium issues.
-     */
-    protected void safeClick(By element) {
-        actions.safeClick(element);
-    }
 
     /**
      * Retrieves the current browser page title.
@@ -214,10 +202,6 @@ public class PageBase {
         js.executeScript("window.scrollTo(0, 0);");
     }
 
-    /** Scrolls the page to the bottom using JavaScript. */
-    protected void scrollToDown() {
-        js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
-    }
 
     /**
      * Scrolls the page down by a specific number of pixels.
@@ -256,7 +240,7 @@ public class PageBase {
         if (driver instanceof IOSDriver iosDriver) {
             iosDriver.findElement(AppiumBy.iOSNsPredicateString("type == 'XCUIElementTypeStaticText' && name == '" + text + "'"));
         } else {
-            actions.scrollToElement(By.xpath("//*[contains(text(),'" + text + "')]"));
+            actions.scrollIntoView(By.xpath("//*[contains(text(),'" + text + "')]"));
         }
 
     }
@@ -276,7 +260,7 @@ public class PageBase {
             String iosPredicate = "type == 'XCUIElementTypeStaticText' && name == '" + text + "'";
             iosDriver.findElement(AppiumBy.iOSNsPredicateString(iosPredicate));
         } else if (platformType.equalsIgnoreCase(PLATFORM_WEB)) {
-            actions.scrollToElement(By.xpath("//*[contains(text(),'" + text + "')]"));
+            actions.scrollIntoView(By.xpath("//*[contains(text(),'" + text + "')]"));
         }
     }
 

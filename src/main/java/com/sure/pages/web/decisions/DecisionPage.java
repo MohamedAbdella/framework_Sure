@@ -13,7 +13,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 
-import static com.sure.utilities.Helper.generateRandomDate;
+import static com.sure.utilities.DateTimeUtils.today;
 
 @Log4j2
 public class DecisionPage extends PageBase {
@@ -141,7 +141,7 @@ public class DecisionPage extends PageBase {
     @Step("Enter Resolution Details")
     public DecisionPage enterResolutionDetails(String decisionDescription, String committeeName, String decisionType, String responsiblePerson, String voteType) {
         sendText(decisionNumberTextField, decisionNumber);
-        sendText(decisionDateTextField, generateRandomDate());
+        sendText(decisionDateTextField, today("yyyy/MM/dd"));
         sendText(decisionDescriptionTextField, decisionDescription);
         selectCommitteeOption(committeeName);
         selectDecisionType(decisionType);
