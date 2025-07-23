@@ -13,25 +13,18 @@ import lombok.extern.log4j.Log4j2;
 public class AddResolutionDecision extends BaseApi {
     @Step("User Can Add New Meeting")
     public JsonPath addResolutionDecisions(String accessToken, VotingType.votingType votingType) {
-
-        setUpRequestSpecification();
-        setUpResponseSpecification();
         String decisionResolutionTitle = new Faker().name().title();
 
         String requestBody = jsonFileManagerBodyRequests.getJsonFileContent("testApiRequestsPath", "AddResolutionDecision.json")
                 .replace("{{Voting_Type}}", String.valueOf(votingType.getValue()))
                 .replace("{{title}}", decisionResolutionTitle);
 
-        return RestAssured.given()
-                .header("Authorization", "Bearer " + accessToken)
 
-                .spec(requestSpec).log().all()
-                .when()
-                .baseUri(ApiPath.setBaseAPIPath())
-                .body(requestBody)
-                .post(ApiPath.apiPath.ADD_ACTIONS.getValue())
-                .then().spec(responseSpec).log().all()
+        String endPoint = ApiPath.apiPath.ADD_ACTIONS.getValue();
+        return postRequestWithAuth(accessToken, requestBody,endPoint, null, null)
+                .then()
                 .extract().jsonPath();
+
     }
 
     @Step("Get Resolution Decision Id From Response")

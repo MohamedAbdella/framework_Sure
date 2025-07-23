@@ -5,25 +5,18 @@ import com.sure.enums.ApiPath;
 import io.restassured.RestAssured;
 import lombok.extern.log4j.Log4j2;
 
+import java.util.Map;
+
 @Log4j2
 public class DeleteResolutionDecision extends BaseApi {
 
     public String deleteResolutionDecision(String accessToken, int resolutionDecisionId) {
 
-        setUpRequestSpecification();
-        setUpResponseSpecification();
 
-        String message = RestAssured.given()
-                .header("Authorization", "Bearer " + accessToken)
+        String endpoint=ApiPath.apiPath.ADD_ACTIONS.getValue() + "/{resolutionDecisionId}";
+        String message= deleteRequest(accessToken,endpoint, Map.of("resolutionDecisionId",resolutionDecisionId),null)
+                .then().extract().jsonPath().get("result");
 
-                .spec(requestSpec).log().all()
-                .pathParam("resolutionDecisionId", resolutionDecisionId)
-                .when()
-                .baseUri(ApiPath.setBaseAPIPath())
-                .body("{}")
-                .delete(ApiPath.apiPath.ADD_ACTIONS.getValue() + "/{resolutionDecisionId}") // Use the path parameter
-                .then().spec(responseSpec).log().all()
-                .extract().path("result");
         log.info("The Message Is " + message);
         return message;
     }

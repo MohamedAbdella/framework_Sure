@@ -11,9 +11,6 @@ public class StartVoting extends BaseApi {
 
     public String startVoting(String accessToken, int decisionId) {
 
-        setUpRequestSpecification();
-        setUpResponseSpecification();
-
         String requestBody = jsonFileManagerBodyRequests.getJsonFileContent("testApiRequestsPath", "Voting.json")
                 .replace("{{Id}}", String.valueOf(decisionId));
 
