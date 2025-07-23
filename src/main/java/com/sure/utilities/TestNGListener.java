@@ -1,7 +1,7 @@
 package com.sure.utilities;
 
 import com.sure.base.DriverManager;
-import io.qameta.allure.Attachment;
+import io.qameta.allure.Allure;
 import io.qameta.allure.Step;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.io.FileUtils;
@@ -13,6 +13,7 @@ import org.testng.ITestResult;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.ByteArrayInputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -70,7 +71,6 @@ public class TestNGListener implements ITestListener {
      * @param methodName    the failed test method
      * @return screenshot bytes or {@code null} when not available
      */
-    @Attachment(value = "Screenshot for the failure", type = "image/png", fileExtension = ".png")
     public byte[] attachScreenshotToAllure(DriverManager driverManager, String methodName) {
         screenshotBytes = null;
 
@@ -78,6 +78,10 @@ public class TestNGListener implements ITestListener {
             try {
                 // Capture screenshot as a byte array
                 screenshotBytes = takesscreenshot.getScreenshotAs(OutputType.BYTES);
+                byte[] finalBytes = screenshotBytes;
+                Allure.step("Capturing screenshot on failure", () ->
+                        Allure.addAttachment(methodName + "-failure", "image/png",
+                                new ByteArrayInputStream(finalBytes), "png"));
             } catch (Exception e) {
                 log.error("Failed to attach screenshot to Allure report for " + methodName, e);
             }

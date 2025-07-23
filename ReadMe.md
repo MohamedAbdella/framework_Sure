@@ -35,6 +35,15 @@ current execution are included. The path is determined from the
 `allure.results.directory` system property when set, otherwise defaults to
 `target/allure-results`.
 
+### Failure Screenshots
+
+Whenever a test fails, a screenshot of the current page is captured automatically
+and attached to the corresponding entry in the Allure report using the failed
+test method's name. Screenshots are also saved under `attachments/screenshots`
+for local reference. Each test class registers both the custom `TestNGListener`
+and the `AllureTestNg` listener so the failure screenshot is linked to the
+proper test case.
+
 ### Platform Configuration
 
 The framework uses the `platformType` property in
