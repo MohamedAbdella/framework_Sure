@@ -79,10 +79,10 @@ public class TestNGListener implements ITestListener {
                 // Capture screenshot as a byte array
                 screenshotBytes = takesscreenshot.getScreenshotAs(OutputType.BYTES);
                 byte[] finalBytes = screenshotBytes;
-                Allure.step("Capturing screenshot on failure", () -> {
-                    Allure.addAttachment(methodName + "-failure", "image/png",
-                            new ByteArrayInputStream(finalBytes), "png");
-                });
+                Allure.step("Capturing screenshot on failure", () ->
+                        Allure.addAttachment(methodName + "-failure", "image/png",
+                                new ByteArrayInputStream(finalBytes), "png"));
+
             } catch (Exception e) {
                 log.error("Failed to attach screenshot to Allure report for " + methodName, e);
             }

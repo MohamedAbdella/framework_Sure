@@ -9,9 +9,10 @@ import lombok.extern.log4j.Log4j2;
 import org.testng.Assert;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
+import io.qameta.allure.testng.AllureTestNg;
 
 @Log4j2
-@Listeners(com.sure.utilities.TestNGListener.class)
+@Listeners({AllureTestNg.class, com.sure.utilities.TestNGListener.class})
 public class ResolutionDecisionTest extends TestBase {
     String email, password;
 
