@@ -44,6 +44,7 @@ for local reference. Each test class registers both the custom `TestNGListener`
 and the `AllureTestNg` listener so the failure screenshot is linked to the
 proper test case.
 
+
 ### Platform Configuration
 
 The framework uses the `platformType` property in

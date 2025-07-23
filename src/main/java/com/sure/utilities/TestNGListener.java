@@ -82,6 +82,7 @@ public class TestNGListener implements ITestListener {
                 Allure.step("Capturing screenshot on failure", () ->
                         Allure.addAttachment(methodName + "-failure", "image/png",
                                 new ByteArrayInputStream(finalBytes), "png"));
+
             } catch (Exception e) {
                 log.error("Failed to attach screenshot to Allure report for " + methodName, e);
             }
