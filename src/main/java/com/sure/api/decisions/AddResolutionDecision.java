@@ -22,8 +22,7 @@ public class AddResolutionDecision extends BaseApi {
 
         String endPoint = ApiPath.apiPath.ADD_ACTIONS.getValue();
         return postRequestWithAuth(accessToken, requestBody,endPoint, null, null)
-                .then()
-                .extract().jsonPath();
+                .jsonPath();
 
     }
 

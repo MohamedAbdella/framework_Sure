@@ -4,17 +4,12 @@ import com.sure.enums.ApiPath;
 import com.sure.utilities.JsonFileManager;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
-import io.restassured.builder.RequestSpecBuilder;
-import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 import lombok.extern.log4j.Log4j2;
-
 import java.util.Map;
 
-import static org.hamcrest.Matchers.anyOf;
-import static org.hamcrest.Matchers.is;
 
 @Log4j2
 public class BaseApi {
@@ -39,31 +34,46 @@ public class BaseApi {
         return getBaseRequestWithoutAuth()
                 .body(payload)
                 .when()
-                .post(endPoint);
+                .post(endPoint)
+                .then()
+                .log().all()
+                .extract().response();
     }
     public Response postRequestWithAuth(String accessToken, Object payload, String endPoint,Map<String, ?> pathParams, Map<String, ?> queryParams) {
         return getBaseRequestWithAuth(accessToken,pathParams, queryParams)
                 .body(payload)
                 .when()
-                .post(endPoint);
+                .post(endPoint)
+                .then()
+                .log().all()
+                .extract().response();
     }
 
     public Response putRequest(String accessToken, Object payload, String endPoint,Map<String, ?> pathParams, Map<String, ?> queryParams) {
         return getBaseRequestWithAuth(accessToken,pathParams, queryParams)
                 .body(payload)
                 .when()
-                .put(endPoint);
+                .put(endPoint)
+                .then()
+                .log().all()
+                .extract().response();
     }
 
     public Response getRequest(String accessToken, String endPoint,Map<String, ?> pathParams, Map<String, ?> queryParams) {
         return getBaseRequestWithAuth(accessToken,pathParams, queryParams)
                 .when()
-                .get(endPoint);
+                .get(endPoint)
+                .then()
+                .log().all()
+                .extract().response();
     }
     public Response deleteRequest(String accessToken, String endPoint,Map<String, ?> pathParams, Map<String, ?> queryParams) {
         return getBaseRequestWithAuth(accessToken,pathParams, queryParams)
                 .when()
-                .delete(endPoint);
+                .delete(endPoint)
+                .then()
+                .log().all()
+                .extract().response();
     }
 
     /**
@@ -75,16 +85,8 @@ public class BaseApi {
      */
     private static RequestSpecification getBaseRequestWithAuth(String accessToken, Map<String, ?> pathParams, Map<String, ?> queryParams) {
 
-        RequestSpecification spec = RestAssured
-                .given()
-                .log()
-                .all()
-                .contentType(ContentType.JSON)
-                .header("Authorization", "Bearer " + accessToken)
-                .header("Connection", "keep-alive")
-                .header("Accept-Encoding", "gzip, deflate, br")
-                .header("Accept", "*/*")
-                .header("User-Agent", "PostmanRuntime/7.32.3");
+        RequestSpecification spec = getBaseRequestWithoutAuth()
+                .header("Authorization", "Bearer " + accessToken);
 
         if (pathParams != null && !pathParams.isEmpty()) {
             spec.pathParams(pathParams);

@@ -15,7 +15,7 @@ public class DeleteResolutionDecision extends BaseApi {
 
         String endpoint=ApiPath.apiPath.ADD_ACTIONS.getValue() + "/{resolutionDecisionId}";
         String message= deleteRequest(accessToken,endpoint, Map.of("resolutionDecisionId",resolutionDecisionId),null)
-                .then().extract().jsonPath().get("result");
+              .jsonPath().get("result");
 
         log.info("The Message Is " + message);
         return message;

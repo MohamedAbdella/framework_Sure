@@ -22,7 +22,7 @@ public class LoginByCriteriaApi extends BaseApi {
 
         Response responseJson=postRequestWithoutAuth(endPoint,requestBody);
 
-        String accessToken = responseJson.then().extract().jsonPath().getString("result.token");
+        String accessToken = responseJson.jsonPath().getString("result.token");
         log.info("Access Token: " + accessToken);
         return accessToken;
     }
