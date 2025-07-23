@@ -16,7 +16,7 @@ import io.qameta.allure.testng.AllureTestNg;
 public class ResolutionDecisionTest extends TestBase {
     String email, password;
 
-    @Test(priority = 1, description = "Given I am on Sign In Page, When The User Logged In Then User Name Appears")
+    @Test(priority = 1, description = " Given I am on Sign In Page, When The User Logged In Then User Name Appears")
     public void checkHomeDashboardIsOpened() {
         String url = "login/SGT";
         new LoginPage(driverManager).navigateTo(url);
