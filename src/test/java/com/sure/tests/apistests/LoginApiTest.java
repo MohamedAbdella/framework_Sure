@@ -2,14 +2,17 @@ package com.sure.tests.apistests;
 
 import com.sure.api.userauth.LoginByCriteriaApi;
 import com.sure.base.BaseApi;
+import com.sure.base.TestBase;
 import com.sure.utilities.JsonFileManager;
 import lombok.extern.log4j.Log4j2;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import java.io.FileNotFoundException;
 
 
 @Log4j2
-public class LoginApiTest extends BaseApi {
+@Listeners(com.sure.utilities.TestNGListener.class)
+public class LoginApiTest{
     String token;
     private final JsonFileManager jsonFileManagerLoginTestData = new JsonFileManager();
 
